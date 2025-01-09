@@ -48,16 +48,18 @@ fun MainScreen() {
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                UserInput(
-                    name = name,
-                    onNameChange = { name = it }
+                TextField(
+                    value = username,
+                    onValueChange = { username = it },
+                    label = { Text("Enter your name") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("nameInput")
                 )
 
                 Button(
                     onClick = {
-                        if (username.isNotBlank()) {
-                            showGreeting = false
-                        }
+                        showGreeting = username.isNotBlank()
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -66,44 +68,21 @@ fun MainScreen() {
                     Text("Submit")
                 }
 
-                if (showGreeting) {
-                    Greeeting(
-                        name = username,
+                if (showGreeting && username.isNotBlank()) {
+                    Text(
+                        text = "Hello $username!, Welcome to INF2007!",
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 16.dp)
+                            .testTag("greetingMsg")
                     )
-
                 }
             }
         }
     }
 }
 
-@Composable
-fun UserInput(name: String, onNameChange: (String) -> Unit, modifier: Modifier = Modifier) {
-    TextField(
-        value = name,
-        onValueChange = { onNameChange(it) },
-        label = { Text("Enter your Name") },
-        modifier = modifier
-            .fillMaxWidth()
-            .testTag("UserInput")
-    )
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $username!, Welcome to InF2007!",
-        modifier = Modifier
-            .fillMaxWidth()
-            .testTag("greeting")
-    )
-}
-
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun MainScreenPreview() {
     MainScreen()
 }
